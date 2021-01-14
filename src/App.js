@@ -1,23 +1,30 @@
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
 import './App.css';
+import axios from 'axios';
 
 function App() {
+  const [characters, setCharacters] = useState([]);
+
+  const getData = async () => {
+    const { data } = await axios.get('https://www.anapioficeandfire.com/api/characters');
+    setCharacters(data);
+  }
+
+  useEffect(() => {
+    getData();
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Find Your Favorite Game of Thrones Characters</h1>
+      <button>Alphabetic Order</button>
+      {
+        characters.map(
+          character => (
+            <p>{character.aliases[0]}</p>
+          )
+        )
+      }
     </div>
   );
 }
